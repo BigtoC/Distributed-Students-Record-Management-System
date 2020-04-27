@@ -15,33 +15,50 @@
           <el-card class="box-card" shadow="hover">
             <el-avatar icon="el-icon-user-solid"></el-avatar>
             {{person.CN}}
-            <div class="rate" v-if="role === 'Teacher'">
-              <el-divider content-position="left">Rate the conduct for the student</el-divider>
-              <el-rate
-                  v-model="conductScores[index]"
-                  :texts="['oops', 'disappointed', 'normal', 'good', 'great']"
-                  :colors="colors"
-                  show-text
-              >
-              </el-rate>
-              <br/>
-              <el-input
-                  type="textarea"
-                  :rows="2"
-                  placeholder="Course Description"
-                  v-model="comments[index]"
-              ></el-input>
-              <br/><br/>
-              <div class="btn-group">
-                <div class="submit-btn" v-if="conductScores[index] === 0">
-                  <el-button type="primary" plain @click="submitConduct(index)">Submit</el-button>
-                </div>
-                <div class="modify-btn" v-else-if="conductScores[index] > 0">
-                  <el-button type="primary" plain @click="modifyConduct(index)">Modify</el-button>
-                </div>
+            <div class="teacher-edit" v-if="role === 'Teacher'">
+              <div class="rate">
+                <el-divider content-position="left">Rate the conduct for the student</el-divider>
+                <el-rate
+                    v-model="conductScores[index]"
+                    :texts="['oops', 'disappointed', 'normal', 'good', 'great']"
+                    :colors="colors"
+                    show-text
+                >
+                </el-rate>
+                <br/>
+                <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="Course Description"
+                    v-model="comments[index]"
+                ></el-input>
+                <br/><br/>
+                <div class="btn-group">
+                  <div class="submit-btn" v-if="haveConduct[index] !== 1">
+                    <el-button type="primary" plain @click="submitConduct(index)">Submit</el-button>
+                  </div>
+                  <div class="modify-btn" v-else-if="haveConduct[index] === 1">
+                    <el-button type="primary" plain @click="modifyConduct(index)">Modify</el-button>
+                  </div>
 
+                </div>
               </div>
             </div>
+
+            <div class="student-show" v-if="role === 'Student'">
+              <div class="show-rate" v-if="person.CN === me">
+                <el-divider content-position="left">Conduct rated by {{ratedCount}} teacher(s)</el-divider>
+                <el-rate
+                    v-model="myAvgRate"
+                    disabled
+                    text-color="#ff9900"
+                    >
+                </el-rate>
+                Your conduct score is <span style="color: #ff9900;">{{myAvgRate}}</span>
+              </div>
+
+            </div>
+
           </el-card>
         </div>
       </el-collapse-item>
@@ -60,6 +77,7 @@
             role: String,
             peers: Array,
             conductRecord: Array,
+            me: String,
         },
         data() {
             return {
@@ -70,11 +88,14 @@
                 teacherArray: [],
                 studentArray: [],
                 conductItems: [],
+                haveConduct: [],
+                myAvgRate: '',
+                ratedCount: '',
             }
         },
         methods: {
             submitConduct(index) {
-                let ratedStd = this.peers[index].O
+                let ratedStd = this.studentArray[index].O
                 let ratedScore = this.conductScores[index]
                 let comment = this.comments[index]
                 let params = new URLSearchParams();
@@ -99,7 +120,13 @@
             },
             divideAndShowRated() {
                 this.divideRoleArray();
-                this.showRated();
+                if (this.role === 'Teacher') {
+                    this.showRated();
+                }
+                else if (this.role === 'Student') {
+                    this.calStdConductRate();
+                }
+
             },
             divideRoleArray() {
                 let allPeers = this.peers;
@@ -122,22 +149,25 @@
                 let conductScores = this.conductScores;
                 let comments = this.comments;
                 let conductItems = this.conductItems;
+                let haveConduct = [];
                 conductRecord.forEach(function (item) {
                     studentArray.forEach(function (sItem, sIndex) {
                         if (item.state.data.receiver.includes(sItem.CN)) {
                             conductItems[sIndex] = item;
+                            haveConduct[sIndex] = 1;
                             conductScores[sIndex] = parseInt(item.state.data.eventValue);
                             comments[sIndex] = item.state.data.eventDescriptions;
                         }
                     })
                 });
+                this.haveConduct = haveConduct;
                 this.conductItems = conductItems;
                 this.conductScores = conductScores;
                 this.comments = comments;
                 // console.log(this.conductItems);
             },
             modifyConduct(index) {
-                let ratedStd = this.peers[index].O
+                let ratedStd = this.studentArray[index].O
                 let ratedScore = this.conductScores[index]
                 let comment = this.comments[index]
                 let params = new URLSearchParams();
@@ -164,6 +194,23 @@
                     }
                     console.log("Rate conduct status: " + res.status)
                 });
+            },
+            calStdConductRate() {
+                let conductRecord = this.conductRecord;
+                let currentYear = new Date().getFullYear().toString();
+                let totalRate = 0;
+                let ratedCount = 0;
+                conductRecord.forEach(function (item) {
+                    let currentData = item.state.data;
+                    let recordYear = currentData.proposedTime.split('-')[0];
+                    if (recordYear === currentYear) {
+                        ratedCount ++;
+                        totalRate += parseInt(currentData.eventValue);
+                        // console.log(totalRate, ratedCount)
+                    }
+                });
+                this.ratedCount = ratedCount;
+                this.myAvgRate = totalRate / ratedCount;
             },
         },
         mounted() {

@@ -19,7 +19,7 @@
             Activities
           </el-tab-pane>
           <el-tab-pane label="People" name="fourth">
-            <People v-bind:base-url="baseUrl" v-bind:role="myRole"
+            <People v-bind:base-url="baseUrl" v-bind:role="myRole" v-bind:me="myName"
                     v-bind:peers="peers" v-bind:conductRecord="conductArray"/>
           </el-tab-pane>
         </el-tabs>
