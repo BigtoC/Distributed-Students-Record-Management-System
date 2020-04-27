@@ -1,0 +1,45 @@
+0000000000000000000000000000000000000000 ec4e9ca30689594329a20879541658c80254a7bf BigtoC <taitocdt@gmail.com> 1584459677 +0800	commit (initial): Initial commit
+ec4e9ca30689594329a20879541658c80254a7bf 808b6dc719cdaf70bbeed3b32b745968426bf09d BigtoC <taitocdt@gmail.com> 1584459801 +0800	commit: Initial commit
+808b6dc719cdaf70bbeed3b32b745968426bf09d 067c9bf36110bd62c9e2445a5b2b47167c910cdd BigtoC <taitocdt@gmail.com> 1584521388 +0800	commit: Basic state
+067c9bf36110bd62c9e2445a5b2b47167c910cdd a2163b50727f70bfa5defdf576eb182d35e58f23 BigtoC <taitocdt@gmail.com> 1584521489 +0800	commit: Basic state
+a2163b50727f70bfa5defdf576eb182d35e58f23 fb3721572078da3fd5a596648189c952df8b70ac BigtoC <taitocdt@gmail.com> 1584521597 +0800	commit: Basic schema
+fb3721572078da3fd5a596648189c952df8b70ac 87601bccc27800774d5a433b4c2882cc51543a70 BigtoC <taitocdt@gmail.com> 1584526547 +0800	commit: Explanations for event types
+87601bccc27800774d5a433b4c2882cc51543a70 28401459afd403a6fb0a2f68007809ad32bf5524 BigtoC <taitocdt@gmail.com> 1584529878 +0800	commit: Writing contracts
+28401459afd403a6fb0a2f68007809ad32bf5524 fd6a2cf60ebe70d99f6fb71b074e430439f792bf BigtoC <taitocdt@gmail.com> 1584538610 +0800	commit: Writing contracts
+fd6a2cf60ebe70d99f6fb71b074e430439f792bf 7d609ac7e2362d0a103b977473349847d856ffd6 BigtoC <taitocdt@gmail.com> 1584806244 +0800	commit: Finish writing contract
+7d609ac7e2362d0a103b977473349847d856ffd6 f1f565eff01e48d978fb0674e00584d21e0bc517 BigtoC <taitocdt@gmail.com> 1584806413 +0800	commit: Refined contract codes
+f1f565eff01e48d978fb0674e00584d21e0bc517 249417f1cbe2da38e59539f172250c064b6cb4c2 BigtoC <taitocdt@gmail.com> 1586187588 +0800	commit: Writing flows
+249417f1cbe2da38e59539f172250c064b6cb4c2 8c5b5511d48c91ba8c37302c794fbc13a9c6767a BigtoC <taitocdt@gmail.com> 1586267747 +0800	commit: Upgrade to v4.4
+8c5b5511d48c91ba8c37302c794fbc13a9c6767a 53f8fc8965b2f04b84a17e9abbbdc74da2587311 BigtoC <taitocdt@gmail.com> 1586267776 +0800	commit: Writing flows
+53f8fc8965b2f04b84a17e9abbbdc74da2587311 844dbbfc136f0b4c0781875ad49e61784c0e6951 BigtoC <taitocdt@gmail.com> 1586418066 +0800	commit: Writing flows tests
+844dbbfc136f0b4c0781875ad49e61784c0e6951 de6961d567c755ab8f723d4b41a663c3bfef90d3 BigtoC <taitocdt@gmail.com> 1586424569 +0800	commit: Finished flows tests for create a course
+de6961d567c755ab8f723d4b41a663c3bfef90d3 fb1357ad7585f8d29771cbea1e129c9a457e0e0a BigtoC <taitocdt@gmail.com> 1586425005 +0800	commit: Finished flows tests for create a course
+fb1357ad7585f8d29771cbea1e129c9a457e0e0a 333c2e1a6ca7ef988265f62525d856b9d17bd195 BigtoC <taitocdt@gmail.com> 1586425251 +0800	commit: Finished flows tests for create a course
+333c2e1a6ca7ef988265f62525d856b9d17bd195 010b589f923e7c1cefd76e9f276cbff19228df48 BigtoC <taitocdt@gmail.com> 1586445406 +0800	commit: Writing flows tests for create a quiz
+010b589f923e7c1cefd76e9f276cbff19228df48 ecad8dbc3f55988579e849d75ae0a3ce5db5b8cc BigtoC <taitocdt@gmail.com> 1586446149 +0800	commit: Finished writing flows tests for create a quiz
+ecad8dbc3f55988579e849d75ae0a3ce5db5b8cc fdba661e0145946447498fdf6c46ed9da6e35301 BigtoC <taitocdt@gmail.com> 1586703877 +0800	commit: Optimize imports
+fdba661e0145946447498fdf6c46ed9da6e35301 c5f7c9464df5e33e56937614b72d446de6500427 BigtoC <taitocdt@gmail.com> 1586768203 +0800	commit: Added one event type
+c5f7c9464df5e33e56937614b72d446de6500427 2bfa43422a8819d484ac5d3433f9446041fb86af BigtoC <taitocdt@gmail.com> 1586771443 +0800	commit: Refactored code structure
+2bfa43422a8819d484ac5d3433f9446041fb86af 2d831ec2d47c153289a048b747dd15b7f3d3519e BigtoC <taitocdt@gmail.com> 1586790677 +0800	commit: Done quiz flows
+2d831ec2d47c153289a048b747dd15b7f3d3519e a8ea70cfefaaacfb9448a1f536e7e2d1068cb0ba BigtoC <taitocdt@gmail.com> 1586852427 +0800	commit: Done conduct test
+a8ea70cfefaaacfb9448a1f536e7e2d1068cb0ba 9b2ba451a8a6fada2c6e78900101a5747343b362 BigtoC <taitocdt@gmail.com> 1586854093 +0800	commit: Done create activity flow test
+9b2ba451a8a6fada2c6e78900101a5747343b362 8c64de9ec19c2a76f1a14afe4b7f1cc982659d14 BigtoC <taitocdt@gmail.com> 1586879515 +0800	commit: Modified test cases
+8c64de9ec19c2a76f1a14afe4b7f1cc982659d14 24a03fb9c563e3a4fa87ee19f5734c62c9c6aea7 BigtoC <taitocdt@gmail.com> 1586880419 +0800	commit: Done certification flow test
+24a03fb9c563e3a4fa87ee19f5734c62c9c6aea7 dbfdf133bbba6984c5eedddb564f2fae6bae7487 BigtoC <taitocdt@gmail.com> 1586960709 +0800	commit: Refactored codes
+dbfdf133bbba6984c5eedddb564f2fae6bae7487 e6d5f7f97f4f40beb2f110a001b9381b171497d9 BigtoC <taitocdt@gmail.com> 1586963911 +0800	commit: Done modify records
+e6d5f7f97f4f40beb2f110a001b9381b171497d9 3ec1ecde02e3d1e3de7b6f869814bf3230c4cf7c BigtoC <taitocdt@gmail.com> 1587026512 +0800	commit: Done anonymous records
+3ec1ecde02e3d1e3de7b6f869814bf3230c4cf7c c15e2b87ea2acd1493ed592afe8a90acab26001b BigtoC <taitocdt@gmail.com> 1587053012 +0800	commit: Save progress
+c15e2b87ea2acd1493ed592afe8a90acab26001b 311be5ac2ad6ecf569ebbb7a437f8c61946c8fe9 BigtoC <taitocdt@gmail.com> 1587139235 +0800	commit: Enhanced import
+311be5ac2ad6ecf569ebbb7a437f8c61946c8fe9 c06a1fe3e31b5ef09b9b9ed4a0e8548b048f118e BigtoC <taitocdt@gmail.com> 1587139520 +0800	commit: Writing controller
+c06a1fe3e31b5ef09b9b9ed4a0e8548b048f118e b1c09d527de26b14cdd0bdfbd3ac46a5a8af39f8 BigtoC <taitocdt@gmail.com> 1587206462 +0800	commit: Code Refactored
+b1c09d527de26b14cdd0bdfbd3ac46a5a8af39f8 6eb4d4e9347118935b3dc5fc0833021727f6e3fc BigtoC <taitocdt@gmail.com> 1587216311 +0800	commit: Code Refactored
+6eb4d4e9347118935b3dc5fc0833021727f6e3fc f53915b0344c5ca6135e3d7f379590a8413f932d BigtoC <taitocdt@gmail.com> 1587219483 +0800	commit: Code Refactored
+f53915b0344c5ca6135e3d7f379590a8413f932d fefa747644553a8cd5039f5d6146be2acbde16d3 BigtoC <taitocdt@gmail.com> 1587223590 +0800	commit: Code Refactored
+fefa747644553a8cd5039f5d6146be2acbde16d3 760901ab499cf64bff5739c8c1b902239aeeba67 BigtoC <taitocdt@gmail.com> 1587294333 +0800	commit: Build and run nodes
+760901ab499cf64bff5739c8c1b902239aeeba67 c09d7a73a7eae3124046056fa43b19a976889ea1 BigtoC <taitocdt@gmail.com> 1587482028 +0800	commit: Updated README
+c09d7a73a7eae3124046056fa43b19a976889ea1 2c912c01e960bc92613506f550e944915d67c861 BigtoC <taitocdt@gmail.com> 1587713856 +0800	commit: Save progress
+2c912c01e960bc92613506f550e944915d67c861 c0f573e363441cbbd78eed6f7382455bcf946c30 BigtoC <taitocdt@gmail.com> 1587719074 +0800	commit: Handled CORS
+c0f573e363441cbbd78eed6f7382455bcf946c30 9fc3b20738dd726d0090c722b6ab997bd7fba145 BigtoC <taitocdt@gmail.com> 1587752828 +0800	commit: Bug fixed for controller
+9fc3b20738dd726d0090c722b6ab997bd7fba145 440081f8ac5a9bb2b805958b65f1e58300a9eb5c BigtoC <taitocdt@gmail.com> 1587898393 +0800	commit: Bug fixed for controller
+440081f8ac5a9bb2b805958b65f1e58300a9eb5c 365741d03d3a3b662693060d8884ce27efc1fc44 BigtoC <taitocdt@gmail.com> 1587901627 +0800	commit: Push to GitHub
+365741d03d3a3b662693060d8884ce27efc1fc44 6f4cbaf482a0a8c88fcb407d25ba5e00de8d4c20 BigtoC <taitocdt@gmail.com> 1587901680 +0800	revert: Revert "Push to GitHub"

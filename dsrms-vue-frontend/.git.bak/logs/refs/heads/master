@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 9ee6cde71f96486adc4d6287b623ba2b3ae823af BigtoC <taitocdt@gmail.com> 1587548941 +0800	commit (initial): init
+9ee6cde71f96486adc4d6287b623ba2b3ae823af 3e22326d47248b9981dd8f7a99a538849751b421 BigtoC <taitocdt@gmail.com> 1587657690 +0800	commit: Save progress
+3e22326d47248b9981dd8f7a99a538849751b421 d67f3404c7b326a1e1e98ca38a7c5d08b157e36c BigtoC <taitocdt@gmail.com> 1587713175 +0800	commit: Refactored codes
+d67f3404c7b326a1e1e98ca38a7c5d08b157e36c 0bad1de0578ee02ae8abccbe2a096b9ada73905f BigtoC <taitocdt@gmail.com> 1587752839 +0800	commit: Backend receive and can be queried
+0bad1de0578ee02ae8abccbe2a096b9ada73905f b32ec0f9aa2599d55c81deb2be9c66256413e92a BigtoC <taitocdt@gmail.com> 1587808275 +0800	commit: Refactored code
+b32ec0f9aa2599d55c81deb2be9c66256413e92a 5e5e89a47f250af3b596e468ee2741f1bd93ea7b BigtoC <taitocdt@gmail.com> 1587829264 +0800	commit: Refactored code
+5e5e89a47f250af3b596e468ee2741f1bd93ea7b 50379f36d1608485c9807b32ae6a62dbcd2a9807 BigtoC <taitocdt@gmail.com> 1587894476 +0800	commit: Peers array only delete teacher
+50379f36d1608485c9807b32ae6a62dbcd2a9807 ce2be4e7553dac8cc1f28c8539ce2b524cb85ab4 BigtoC <taitocdt@gmail.com> 1587894618 +0800	commit: Classify different type array
+ce2be4e7553dac8cc1f28c8539ce2b524cb85ab4 575bc98121ce8415ac5d9b05bc4b3ee70637d89e BigtoC <taitocdt@gmail.com> 1587894754 +0800	commit: Larger the font size of tab bar
