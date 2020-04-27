@@ -1,0 +1,6 @@
+[submodule "dsrms-vue-frontend"]
+	path = dsrms-vue-frontend
+	url = git@github.com:BigtoC/dsrms-vue-frontend.git
+[submodule "DSRMS-Corda-Backend"]
+	path = DSRMS-Corda-Backend
+	url = git@github.com:BigtoC/DSRMS-Corda-Backend.git
