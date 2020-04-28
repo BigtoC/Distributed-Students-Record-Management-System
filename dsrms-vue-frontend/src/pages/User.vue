@@ -15,8 +15,8 @@
           </el-tab-pane>
           <el-tab-pane label="Quiz" name="second">
             <Quiz
-                v-bind:course="courseArray" v-bind:role="myRole"
-                v-bind:base-url="baseUrl" v-bind:peers="peers" v-bind:quiz="quizArray"
+                v-bind:course="courseArray" v-bind:role="myRole" v-bind:base-url="baseUrl" v-bind:peers="peers"
+                v-bind:quiz="quizArray" v-bind:doQuiz="doQuizArray" v-bind:grades="gradeArray"
             />
             <Footer />
           </el-tab-pane>

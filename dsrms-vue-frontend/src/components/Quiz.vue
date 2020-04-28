@@ -57,26 +57,99 @@
     <el-divider content-position="left">Quiz List</el-divider>
     <el-card class="box-card" shadow="hover" >
       <el-collapse v-model="activeNames">
-        <el-collapse-item :key="item.ref.txhash" v-for="(item,index) in quiz" :title="item.state.data.eventValue" :name="index">
+        <el-collapse-item :key="item.ref.txhash" v-for="(item,index) in quiz"
+                          :title="item.state.data.eventValue" :name="index"
+        >
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix" >
               <span style="float: left;">Course details</span>
               <div class="teacher-btn-gp" v-if="role === 'Teacher'">
                 <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>
-                <!--                <el-button style="float: right; padding: 1px 0" type="text">Create Quiz | </el-button>-->
+              </div>
+              <div class="teacher-btn-gp" v-if="role === 'Student'">
+                <el-button style="float: right; padding: 1px 0" type="text"
+                           @click="currentQuiz = item.state.data">
+                  Answer
+                </el-button>
               </div>
 
             </div>
             <div class="text-item">
               <p><b>Teacher:</b> {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
               <p><b>Student:</b> {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
-              <p><b>Course Description:</b> {{ item.state.data.eventDescriptions }}</p>
+              <b>Quiz Questions:</b><br/>
+              <div v-bind:key="question" v-for="question in beautifyQuizQuestions(item.state.data.eventDescriptions)">
+                {{ question }}<br/>
+              </div>
             </div>
           </el-card>
         </el-collapse-item>
       </el-collapse>
     </el-card>
 
+    <br/>
+    <div class="answer">
+      <el-divider content-position="left">Answer</el-divider>
+      <div id="answer-input">
+        <el-card class="box-card" shadow="hover">
+          <div slot="header" class="clearfix">
+            <span>{{ currentQuiz.eventValue }}</span>
+            <el-popover style="float: right; padding: 1px 0" placement="top" width="280">
+              <div>Are you sure you are ready to submit?</div><br/>
+              <div style="text-align: right; margin: 0">
+                <el-button type="primary" size="mini" @click="submitAnswer()">
+                  Yes! OK!
+                </el-button>
+              </div>
+              <el-button slot="reference" size="small" round>Submit</el-button>
+            </el-popover>
+          </div>
+          <div class="answer-input">
+            <el-input type="textarea" :autosize="{ minRows: 2}" :placeholder="currentQuiz.eventValue" v-model="answers">
+            </el-input>
+          </div>
+        </el-card>
+      </div>
+    </div>
+
+    <div class="quiz-result">
+      <br/>
+      <el-divider content-position="left">Quiz Results</el-divider>
+      <div :key="result.ref.txhash" v-for="result in doQuiz">
+        <el-card class="box-card card-header" shadow="hover">
+          <div slot="header" class="clearfix">
+            <p>{{ result.state.data.eventDescriptions }}</p>
+            Grade:
+            <span :key="grade.ref.txhash" v-for="grade in grades">
+              <span v-if="isGraded(grade, result) === true">
+                {{ grade.state.data.eventValue }}
+              </span>
+
+            </span>
+            <div class="grade-btn-gp" v-if="role === 'Teacher'">
+              <el-popover style="float: right; padding: 1px 0" placement="top" width="280">
+                <el-input placeholder="Grade this quiz" v-model="teacherGrade" clearable></el-input><br/><br/>
+                <div style="text-align: right; margin: 0">
+                  <el-button type="primary" size="mini" @click="teacherGrading(result.state.data)">
+                    Submit
+                  </el-button>
+                </div>
+                <el-button slot="reference" size="small" round>Grade</el-button>
+              </el-popover>
+            </div>
+
+          </div>
+          <div class="text-item">
+            <p><b>Student:</b> {{ result.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
+            <b>Answers:</b><br/>
+            <div v-bind:key="answer" v-for="answer in beautifyQuizQuestions(result.state.data.eventValue)">
+              {{ answer }}<br/>
+            </div>
+          </div>
+        </el-card>
+        <br/>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -90,14 +163,20 @@
             peers: Array,
             baseUrl: String,
             quiz: Array,
+            doQuiz: Array,
+            grades: Array,
         },
         data() {
             return {
+                activeNames: [],
                 groupedCourses: {},
                 courseCategories: [],
                 eventDescription: '',
                 eventValue: '',
                 selectedCourse: '',
+                answers: '',
+                currentQuiz: {},
+                teacherGrade: '',
             }
         },
         methods: {
@@ -132,8 +211,12 @@
                 this.groupedCourses = groupedCourses;
                 this.courseCategories = categories;
             },
+            beautifyQuizQuestions(stringLine) {
+                console.log(stringLine);
+                return stringLine.split('\n')
+            },
             createQuiz() {
-                if (!this.validateCreateCourse()) {
+                if (!this.validateCreateQuiz()) {
                     return;
                 }
                 /**
@@ -170,7 +253,7 @@
                                 showClose: true,
                                 type: 'success',
                             });
-                            // location.reload();
+                            location.reload();
                         }
                         else {
                             that.$message({
@@ -184,7 +267,81 @@
                 });
 
             },
-            validateCreateCourse() {
+            submitAnswer() {
+                let currentQuiz = this.currentQuiz;
+                let eventVal = this.answers;
+                let eventDes = currentQuiz.eventValue;
+                let partyName = currentQuiz.issuer.split(', ')[2].split('=')[1];
+                let refLinearId = currentQuiz.linearId.id.toString();
+                let params = new URLSearchParams();
+                params.append('eventType', 'DoQuiz');
+                params.append('eventDescription', eventDes);
+                params.append('eventValue', eventVal);
+                params.append('fileReference', "this.fileReference");
+                params.append('partyName', partyName);
+                params.append("refLinearId", refLinearId);
+
+                this.$axios.post(
+                    `${this.baseUrl}/create-record`,
+                    params
+                ).then(res => {
+                    if (res.status === 201) {
+                        this.$message({
+                            message: 'Submit quiz answer success!',
+                            showClose: true,
+                            type: 'success',
+                        });
+                        location.reload();
+                    }
+                    else {
+                        this.$message({
+                            message: `Submit quiz answer fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
+                    }
+                });
+
+            },
+            teacherGrading(answerItem) {
+                let currentQuiz = answerItem;
+                let eventVal = this.teacherGrade;
+                let eventDes = currentQuiz.eventDescriptions;
+                let partyName = currentQuiz.issuer.split(', ')[2].split('=')[1];
+                let refLinearId = currentQuiz.linearId.id.toString();
+                let params = new URLSearchParams();
+                params.append('eventType', 'Grade');
+                params.append('eventDescription', eventDes);
+                params.append('eventValue', eventVal);
+                params.append('fileReference', "this.fileReference");
+                params.append('partyName', partyName);
+                params.append("refLinearId", refLinearId);
+
+                this.$axios.post(
+                    `${this.baseUrl}/create-record`,
+                    params
+                ).then(res => {
+                    if (res.status === 201) {
+                        this.$message({
+                            message: 'Grade the quiz answer success!',
+                            showClose: true,
+                            type: 'success',
+                        });
+                        location.reload();
+                    }
+                    else {
+                        this.$message({
+                            message: `Grade the quiz answer fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
+                    }
+                });
+            },
+            isGraded(grade, result) {
+                return grade.state.data.refStateId === result.state.data.linearId.id
+            },
+            validateCreateQuiz() {
                 let isValidTx = true;
                 if (this.selectedCourse.length < 1) {
                     this.$message({
@@ -244,7 +401,7 @@
   .clearfix:after {
     clear: both
   }
-  .text-item {
+  .text-item, .card-header {
     text-align: left;
     font-size: medium;
   }
