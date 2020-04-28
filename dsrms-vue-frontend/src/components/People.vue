@@ -29,12 +29,8 @@
                 >
                 </el-rate>
                 <br/>
-                <el-input
-                    type="textarea"
-                    :rows="2"
-                    placeholder="Comments for the student"
-                    v-model="comments[index]"
-                ></el-input>
+                <el-input type="textarea" :rows="2" placeholder="Comments for the student" v-model="comments[index]">
+                </el-input>
                 <br/><br/>
                 <div class="btn-group">
                   <div class="submit-btn" v-if="haveConduct[index] !== 1">
@@ -55,12 +51,7 @@
             <div class="student-show" v-if="role === 'Student'">
               <div class="show-rate" v-if="person.CN === me">
                 <el-divider content-position="left">Conduct rated by {{ratedCount}} teacher(s)</el-divider>
-                <el-rate
-                    v-model="myAvgRate"
-                    disabled
-                    text-color="#ff9900"
-                    >
-                </el-rate>
+                <el-rate v-model="myAvgRate" disabled text-color="#ff9900"></el-rate>
                 Your conduct score is <span style="color: #ff9900;"><b>{{myAvgRate}}</b></span>
               </div>
 
@@ -313,7 +304,7 @@
     clear: both
   }
   .people-cards, .my-certificate {
-    width: 460px;
+    width: 450px;
     float: left;
     text-align: left;
     margin: 15px;

@@ -3,6 +3,9 @@
   <p>
     <img src="../assets/logo.png" width="360">
   </p>
+  <h2>Distributed Students Record Management System</h2>
+  <p>Demonstration</p>
+  <br/>
   <el-select v-model="value" @change="handleChange"
   clearable placeholder="Choose which user to login" id="select">
     <el-option-group
@@ -17,8 +20,10 @@
       </el-option>
     </el-option-group>
   </el-select>
-  &nbsp;&nbsp;&nbsp;
-  <el-button type="primary" plain @click="go">Go</el-button>
+
+  <el-button type="primary" plain @click="go" style="margin: 20px;">
+    Go
+  </el-button>
 </div>
 </template>
 
@@ -76,12 +81,12 @@ export default {
 
 <style scoped>
   #main {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  align-items: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    align-items: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>

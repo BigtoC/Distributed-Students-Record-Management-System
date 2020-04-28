@@ -234,7 +234,6 @@
                 params.append('eventDescription', this.eventDescription);
                 params.append('eventValue', this.eventValue);
                 params.append('fileReference', "this.fileReference");
-                // Todo: Bugs
                 selectedCourseItems.forEach(function (item) {
                     let submitParams = params;
                     const receiver = item.receiver.split(', ')[2].split('=')[1];

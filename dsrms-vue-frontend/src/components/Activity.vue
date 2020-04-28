@@ -195,7 +195,7 @@
                     params.append('eventDescription', eventDes);
                     params.append('eventValue', eventVal);
                     params.append('fileReference', "this.fileReference");
-                    params.append('partyName', party)
+                    params.append('partyName', party);
                     that.$axios.post(
                         `${that.baseUrl}/create-record`,
                         params
