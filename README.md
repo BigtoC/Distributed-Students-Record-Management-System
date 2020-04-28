@@ -4,6 +4,8 @@ City University of Hong Kong
 Department of Computer Science  
 Final Year Project 19CS005
 
+![screenshot](./19CS005-Screenshot.png)
+
 ## Project Structure
 
 ### Prerequisites
