@@ -84,15 +84,7 @@ class MainController(rpc: NodeRPCConnection) {
     }
 
     /**
-     * Initiates a flow to agree an record between two parties.
-     *
-     * Once the flow finishes it will have written the IOU to ledger. Both the lender and the borrower will be able to
-     * see it when calling /spring/api/my-records on their respective nodes.
-     *
-     * This end-point takes a Party name parameter as part of the path. If the serving node can't find the other party
-     * in its network map cache, it will return an HTTP bad request.
-     *
-     * The flow is invoked asynchronously. It returns a future when the flow's call() method returns.
+     * Initiates a flow to create record between two parties.
      */
     @PostMapping(
             value = [ "create-record" ],
