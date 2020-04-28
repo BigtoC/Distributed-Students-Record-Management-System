@@ -23,7 +23,8 @@
           </el-tab-pane>
           <el-tab-pane label="People" name="fourth">
             <People v-bind:base-url="baseUrl" v-bind:role="myRole" v-bind:me="myName"
-                    v-bind:peers="peers" v-bind:conductRecord="conductArray"/>
+                    v-bind:peers="peers" v-bind:conductRecord="conductArray" v-bind:aboutMe="aboutMe"
+            />
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -63,6 +64,7 @@
                 attendanceArray: [],
                 certificationArray: [],
                 conductArray: [],
+                aboutMe: [],
             }
         },
         methods: {
@@ -76,6 +78,15 @@
                     this.myParty = myIDs[2].split('=')[1];
                     this.mySchool = myIDs[3].split('=')[1];
                     this.myCountry = myIDs[4].split('=')[1];
+                    let meInfoArray = [];
+                    let meInfoDict = {}
+                    meInfoDict["myName"] = this.myName;
+                    meInfoDict["myRole"] = this.myRole;
+                    meInfoDict["myParty"] = this.myParty;
+                    meInfoDict["mySchool"] = this.mySchool;
+                    meInfoDict["myCountry"] = this.myCountry;
+                    meInfoArray.push(meInfoDict);
+                    this.aboutMe = meInfoArray;
                 });
             },
             getPeers() {

@@ -6,7 +6,7 @@
         <div class="people-cards" v-for='(person) in teacherArray' v-bind:key="person.O">
           <el-card class="box-card" shadow="hover">
             <el-avatar icon="el-icon-user-solid"></el-avatar>
-            {{person.CN}}
+            <span class="person-name">{{person.CN}}</span>
           </el-card>
         </div>
       </el-collapse-item>
@@ -14,7 +14,7 @@
         <div class="people-cards" v-for='(person, index) in studentArray' v-bind:key="person.O">
           <el-card class="box-card" shadow="hover">
             <el-avatar icon="el-icon-user-solid"></el-avatar>
-            {{person.CN}}
+            <span class="person-name">{{person.CN}}</span>
             <div class="teacher-edit" v-if="role === 'Teacher'">
               <div class="rate">
                 <el-divider content-position="left">Rate the conduct for the student</el-divider>
@@ -69,6 +69,17 @@
 
     </el-collapse>
 
+    <br/>
+    <el-divider content-position="left">About Me</el-divider>
+    <el-table
+        :data="aboutMe"
+        style="width: 100%">
+      <el-table-column prop="myName" label="Name" width="280"></el-table-column>
+      <el-table-column prop="myRole" label="Role" width="280"></el-table-column>
+      <el-table-column prop="myParty" label="Short Name" width="280"></el-table-column>
+      <el-table-column prop="mySchool" label="School" width="280"></el-table-column>
+      <el-table-column prop="myCountry" label="Country" width="280"></el-table-column>
+    </el-table>
 
   </div>
 </template>
@@ -82,6 +93,7 @@
             peers: Array,
             conductRecord: Array,
             me: String,
+            aboutMe: Array,
         },
         data() {
             return {
@@ -282,5 +294,10 @@
     float: left;
     text-align: left;
     margin: 15px;
+  }
+  .person-name {
+    font-size: larger;
+    margin-left: 10px;
+    font-weight: bold;
   }
 </style>

@@ -47,13 +47,6 @@
         </el-upload>
         <br/>
       </el-card>
-
-      <br/>
-      <el-divider content-position="left">Modify a course</el-divider>
-      <el-card class="box-card" shadow="hover" id="modify-course">
-        modify a course
-      </el-card>
-
     </div>
 
     <br/>
@@ -71,9 +64,9 @@
 
             </div>
             <div class="text-item">
-              <p>Teacher: {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
-              <p>Student: {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
-              <p>Course Description: {{ item.state.data.eventDescriptions }}</p>
+              <p><b>Teacher:</b> {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Student:</b> {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Course Description:</b> {{ item.state.data.eventDescriptions }}</p>
             </div>
           </el-card>
         </el-collapse-item>

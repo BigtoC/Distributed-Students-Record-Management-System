@@ -4,7 +4,7 @@
       <el-divider content-position="left">Create Activities</el-divider>
       <el-card class="box-card" shadow="hover"  id="create-course">
         <div slot="header" class="clearfix">
-          <span>Create a course</span>
+          <span>Create an activity</span>
           <el-tooltip content="Create an activity" placement="right">
             <el-button style="float: right; padding: 3px 0; font-size: large;" type="primary" plain @click="createActivity">
               Create!
@@ -13,7 +13,7 @@
 
         </div>
 
-        <el-select multiple collapse-tags v-model='allPeople.O' placeholder='Select Attendee'
+        <el-select multiple collapse-tags v-model='allPeople.O' placeholder='Select Participant(s)'
                    @change='changeSelect' style="width: 350px;">
           <el-checkbox v-model="checked" @change='selectAll'>Select All</el-checkbox>
           <el-option v-for='item in allPeople' :key='item.O' :label='item.CN' :value='item.O'>
@@ -50,33 +50,25 @@
         </el-upload>
         <br/>
       </el-card>
-
-      <br/>
-      <el-divider content-position="left">Modify a course</el-divider>
-      <el-card class="box-card" shadow="hover" id="modify-course">
-        modify a course
-      </el-card>
-
     </div>
 
     <br/>
     <el-divider content-position="left">Activities List</el-divider>
     <el-card class="box-card" shadow="hover">
       <el-collapse v-model="activeNames">
-        <el-collapse-item :key="item.ref.txhash" v-for="(item,index) in activities" :title="item.state.data.eventValue" :name="index">
+        <el-collapse-item :key="item.ref.txhash" v-for="(item, index) in activities" :title="item.state.data.eventValue" :name="index">
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix" >
               <span style="float: left;">Course details</span>
-              <div class="teacher-btn-gp" v-if="role === 'Teacher'">
-                <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>
-                <!--                <el-button style="float: right; padding: 1px 0" type="text">Create Quiz | </el-button>-->
+              <div class="teacher-btn-gp" v-if="myParty === item.state.data.issuer.split(', ')[2].split('=')[1]">
+                <el-button style="float: right; padding: 1px 0" type="text">Take Attendance</el-button>
               </div>
 
             </div>
             <div class="text-item">
-              <p>Teacher: {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
-              <p>Student: {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
-              <p>Course Description: {{ item.state.data.eventDescriptions }}</p>
+              <p><b>Organizer:</b> {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Participant:</b> {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Activity Description:</b> {{ item.state.data.eventDescriptions }}</p>
             </div>
           </el-card>
         </el-collapse-item>
