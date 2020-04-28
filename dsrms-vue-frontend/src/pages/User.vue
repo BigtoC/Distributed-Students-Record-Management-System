@@ -1,6 +1,6 @@
 <template>
-    <div v-loading.fullscreen.lock="fullscreenLoading">
-      <br/>
+  <div v-loading.fullscreen.lock="fullscreenLoading">
+    <el-header>
       <div id="header">
         <el-page-header @back="goBack" v-bind:title="(myRole)" v-bind:content="myName + ' - ' + mySchool"></el-page-header>
         <el-tabs v-model="activeName">
@@ -11,26 +11,32 @@
                 v-bind:course="courseArray" v-bind:role="myRole"
                 v-bind:base-url="baseUrl" v-bind:peers="peers"
             />
+            <Footer />
           </el-tab-pane>
           <el-tab-pane label="Quiz" name="second">
             <Quiz
                 v-bind:course="courseArray" v-bind:role="myRole"
                 v-bind:base-url="baseUrl" v-bind:peers="peers" v-bind:quiz="quizArray"
             />
+            <Footer />
           </el-tab-pane>
           <el-tab-pane label="Activity" name="third">
-            <Activity v-bind:base-url="baseUrl" v-bind:my-party="myParty" v-bind:activities="activityArray" />
+            <Activity v-bind:base-url="baseUrl" v-bind:my-party="myParty" v-bind:certifications="certificationArray"
+                      v-bind:activities="activityArray" v-bind:attendance="attendanceArray"
+            />
+            <Footer />
           </el-tab-pane>
           <el-tab-pane label="People" name="fourth">
-            <People v-bind:base-url="baseUrl" v-bind:role="myRole" v-bind:me="myName"
-                    v-bind:peers="peers" v-bind:conductRecord="conductArray" v-bind:aboutMe="aboutMe"
+            <People v-bind:base-url="baseUrl" v-bind:role="myRole" v-bind:me="myName" v-bind:peers="peers"
+                    v-bind:conductRecord="conductArray" v-bind:aboutMe="aboutMe" v-bind:certifications="certificationArray"
             />
+            <Footer />
           </el-tab-pane>
         </el-tabs>
       </div>
-      <div id="main"></div>
 
-    </div>
+    </el-header>
+  </div>
 </template>
 
 <script>
@@ -38,6 +44,7 @@
     import People from "../components/People";
     import Quiz from "../components/Quiz";
     import Activity from "../components/Activity";
+    import Footer from "../components/Footer";
 
     export default {
         name: 'User',
@@ -141,6 +148,7 @@
             People,
             Quiz,
             Activity,
+            Footer,
         },
         mounted() {
             this.getMyRecords();

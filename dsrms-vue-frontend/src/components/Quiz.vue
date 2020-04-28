@@ -155,7 +155,7 @@
                 selectedCourseItems.forEach(function (item) {
                     let submitParams = params;
                     const receiver = item.receiver.split(', ')[2].split('=')[1];
-                    const refLinearId = item.linearId.toString();
+                    const refLinearId = item.linearId.id.toString();
                     submitParams.append("partyName", receiver);
                     submitParams.append("refLinearId", refLinearId);
                     // console.log(submitParams.partyName);

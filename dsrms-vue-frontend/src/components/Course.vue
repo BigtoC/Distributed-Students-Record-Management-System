@@ -57,10 +57,9 @@
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix" >
               <span style="float: left;">Course details</span>
-              <div class="teacher-btn-gp" v-if="role === 'Teacher'">
-                <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>
-<!--                <el-button style="float: right; padding: 1px 0" type="text">Create Quiz | </el-button>-->
-              </div>
+<!--              <div class="teacher-btn-gp" v-if="role === 'Teacher'">-->
+<!--                <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>-->
+<!--              </div>-->
 
             </div>
             <div class="text-item">

@@ -56,12 +56,31 @@
     <el-divider content-position="left">Activities List</el-divider>
     <el-card class="box-card" shadow="hover">
       <el-collapse v-model="activeNames">
-        <el-collapse-item :key="item.ref.txhash" v-for="(item, index) in activities" :title="item.state.data.eventValue" :name="index">
+        <el-collapse-item :key="item.ref.txhash" v-for="(item, index) in activities"
+                          :title="item.state.data.eventValue" :name="index"
+        >
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix" >
-              <span style="float: left;">Course details</span>
+              <span style="float: left;">Activity details</span>
               <div class="teacher-btn-gp" v-if="myParty === item.state.data.issuer.split(', ')[2].split('=')[1]">
-                <el-button style="float: right; padding: 1px 0" type="text">Take Attendance</el-button>
+                <el-popover style="float: right; padding: 1px 0"  @click="issueCertificate(item.state.data)"
+                            placement="top" width="160" v-model="visible"
+                >
+                  <el-button slot="reference" size="small" round @click="takeAttendance(item.state.data)">
+                    Take Attendance
+                  </el-button>
+                </el-popover>
+                <el-popover style="float: right; padding: 1px 0"
+                            placement="top" width="160"  @click="visible = !visible"
+                >
+                  <el-input placeholder="Certificate Name" v-model="cerName" clearable></el-input><br/><br/>
+                  <div style="text-align: right; margin: 0">
+                    <el-button type="primary" size="mini" @click="issueCertificate(item.state.data)">
+                      Submit
+                    </el-button>
+                  </div>
+                  <el-button slot="reference" size="small" round>Issue a certificate</el-button>
+                </el-popover>
               </div>
 
             </div>
@@ -69,6 +88,19 @@
               <p><b>Organizer:</b> {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
               <p><b>Participant:</b> {{ item.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
               <p><b>Activity Description:</b> {{ item.state.data.eventDescriptions }}</p>
+              <div :key="cert.ref.txhash" v-for="(cert) in certifications">
+                <p v-if="cert.state.data.receiver === item.state.data.receiver">
+                  <b>Certificate(s): </b> {{ cert.state.data.eventValue }}
+                </p>
+              </div>
+            </div>
+            <div class="table-item">
+              <span><b>Attendance Records</b></span>
+              <div class="attendance-record" :key="record.ref.txhash" v-for="(record) in attendance">
+                <span v-if="record.state.data.receiver === item.state.data.receiver">
+                  <b style="font-size: larger">-</b> {{ record.state.data.eventValue }}
+                </span>
+              </div>
             </div>
           </el-card>
         </el-collapse-item>
@@ -84,6 +116,8 @@
             baseUrl: String,
             myParty: String,
             activities: Array,
+            attendance: Array,
+            certifications: Array,
         },
         data() {
             return {
@@ -94,7 +128,9 @@
                 eventDescription: '',
                 eventValue: '',
                 allPeople: [],
-                uploadUrl: this.baseUrl + "/uploads"
+                uploadUrl: this.baseUrl + "/uploads",
+                cerName: '',
+                visible: false,
             }
         },
         methods: {
@@ -180,8 +216,7 @@
                             });
                         }
                     });
-                })
-
+                });
             },
             validateCreateActivity() {
                 let isValidTx = true;
@@ -203,6 +238,90 @@
                 }
                 return isValidTx;
             },
+            takeAttendance(recordItem) {
+                let partyName = recordItem.receiver.split(', ')[2].split('=')[1];
+                let eventVal = this.getNowDateTime();
+                let eventDes = recordItem.eventDescriptions;
+                let refLinearId = recordItem.linearId.id.toString();
+                let params = new URLSearchParams();
+                params.append('eventType', 'Attendance');
+                params.append('eventDescription', eventDes);
+                params.append('eventValue', eventVal);
+                params.append('fileReference', "this.fileReference");
+                params.append('partyName', partyName);
+                params.append("refLinearId", refLinearId);
+
+                this.$axios.post(
+                    `${this.baseUrl}/create-record`,
+                    params
+                ).then(res => {
+                    if (res.status === 201) {
+                        this.$message({
+                            message: `Take attendance for ${partyName} success!`,
+                            showClose: true,
+                            type: 'success',
+                        });
+                        location.reload();
+                    }
+                    else {
+                        this.$message({
+                            message: `Take attendance for ${partyName} fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
+                    }
+                    console.log("Rate conduct status: " + res.status)
+                });
+
+            },
+            issueCertificate(recordItem) {
+                let partyName = recordItem.receiver.split(', ')[2].split('=')[1];
+                console.log(partyName);
+                let eventVal = this.cerName;
+                console.log(eventVal);
+                let recordValue = recordItem.eventValue.toString();
+                console.log(recordValue);
+                let recordDes = recordItem.eventDescriptions.toString();
+                console.log(recordDes);
+                let eventDes = recordValue + " - " + recordDes;
+                console.log(eventDes);
+                let refLinearId = recordItem.linearId.id.toString();
+                let params = new URLSearchParams();
+                params.append('eventType', 'Certification');
+                params.append('eventDescription', eventDes);
+                params.append('eventValue', eventVal);
+                params.append('fileReference', "this.fileReference");
+                params.append('partyName', partyName);
+                params.append("refLinearId", refLinearId);
+
+                this.$axios.post(
+                    `${this.baseUrl}/create-record`,
+                    params
+                ).then(res => {
+                    if (res.status === 201) {
+                        this.$message({
+                            message: `Issue a certificate for ${partyName} success!`,
+                            showClose: true,
+                            type: 'success',
+                        });
+                        location.reload();
+                    }
+                    else {
+                        this.$message({
+                            message: `Issue a certificate for ${partyName} fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
+                    }
+                    console.log("Rate conduct status: " + res.status)
+                });
+            },
+            getNowDateTime() {
+                let today = new Date();
+                let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                return date + ' ' + time;
+            }
         },
         created() {
             this.getAllPeople();
@@ -221,8 +340,14 @@
     text-align: left!important;
   }
   .text-item {
+    float: left;
     text-align: left;
     font-size: medium;
+  }
+  .table-item {
+    float: right;
+    text-align: right;
+
   }
   .clearfix:before,
   .clearfix:after {

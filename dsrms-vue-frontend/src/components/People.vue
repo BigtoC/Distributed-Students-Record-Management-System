@@ -7,6 +7,7 @@
           <el-card class="box-card" shadow="hover">
             <el-avatar icon="el-icon-user-solid"></el-avatar>
             <span class="person-name">{{person.CN}}</span>
+            <span class="person-name" v-if="person.CN === me">(me)</span>
           </el-card>
         </div>
       </el-collapse-item>
@@ -15,6 +16,8 @@
           <el-card class="box-card" shadow="hover">
             <el-avatar icon="el-icon-user-solid"></el-avatar>
             <span class="person-name">{{person.CN}}</span>
+            <span class="person-name" v-if="person.CN === me">(me)</span>
+
             <div class="teacher-edit" v-if="role === 'Teacher'">
               <div class="rate">
                 <el-divider content-position="left">Rate the conduct for the student</el-divider>
@@ -70,16 +73,35 @@
     </el-collapse>
 
     <br/>
-    <el-divider content-position="left">About Me</el-divider>
-    <el-table
-        :data="aboutMe"
-        style="width: 100%">
-      <el-table-column prop="myName" label="Name" width="280"></el-table-column>
-      <el-table-column prop="myRole" label="Role" width="280"></el-table-column>
-      <el-table-column prop="myParty" label="Short Name" width="280"></el-table-column>
-      <el-table-column prop="mySchool" label="School" width="280"></el-table-column>
-      <el-table-column prop="myCountry" label="Country" width="280"></el-table-column>
-    </el-table>
+    <div class="about-me">
+      <el-divider content-position="left">About Me</el-divider>
+      <el-table
+          :data="aboutMe"
+          style="width: 100%">
+        <el-table-column prop="myName" label="Name" width="280"></el-table-column>
+        <el-table-column prop="myRole" label="Role" width="280"></el-table-column>
+        <el-table-column prop="myParty" label="Short Name" width="280"></el-table-column>
+        <el-table-column prop="mySchool" label="School" width="280"></el-table-column>
+        <el-table-column prop="myCountry" label="Country" width="280"></el-table-column>
+      </el-table>
+    </div>
+
+    <br/>
+    <div>
+      <el-divider content-position="left">My Certificate</el-divider>
+      <el-card class="box-card" shadow="hover">
+        <div class="show_cert" :key="cert.ref.txhash" v-for="cert in certifications">
+          <div class="my-certificate">
+            <el-card class="box-card" shadow="hover">
+              <p><b>Certificate: </b>{{ cert.state.data.eventValue }}</p>
+              <p><b>Organizer: </b>{{ cert.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Receiver: </b>{{ cert.state.data.receiver.split(', ')[0].split('=')[1] }}</p>
+              <p><b>Activity Details: </b>{{ cert.state.data.eventDescription }} </p>
+            </el-card>
+          </div>
+        </div>
+      </el-card>
+    </div>
 
   </div>
 </template>
@@ -94,6 +116,7 @@
             conductRecord: Array,
             me: String,
             aboutMe: Array,
+            certifications: Array,
         },
         data() {
             return {
@@ -289,7 +312,7 @@
   .clearfix:after {
     clear: both
   }
-  .people-cards {
+  .people-cards, .my-certificate {
     width: 460px;
     float: left;
     text-align: left;
