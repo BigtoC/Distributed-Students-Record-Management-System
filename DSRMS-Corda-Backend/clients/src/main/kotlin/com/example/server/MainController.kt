@@ -79,7 +79,7 @@ class MainController(rpc: NodeRPCConnection) {
         return mapOf("allPeople" to nodeInfo
                 .map { it.legalIdentities.first().name }
                 //filter out myself, notary and eventual network map started by driver
-                .filter { it.locality in SERVICE_NAMES }
+                .filter { it.organisation !in SERVICE_NAMES }
         )
     }
 
