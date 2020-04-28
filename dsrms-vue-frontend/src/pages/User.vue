@@ -13,10 +13,13 @@
             />
           </el-tab-pane>
           <el-tab-pane label="Quiz" name="second">
-            Quiz
+            <Quiz
+                v-bind:course="courseArray" v-bind:role="myRole"
+                v-bind:base-url="baseUrl" v-bind:peers="peers" v-bind:quiz="quizArray"
+            />
           </el-tab-pane>
           <el-tab-pane label="Activity" name="third">
-            Activities
+            <Activity v-bind:base-url="baseUrl" v-bind:my-party="myParty" v-bind:activities="activityArray" />
           </el-tab-pane>
           <el-tab-pane label="People" name="fourth">
             <People v-bind:base-url="baseUrl" v-bind:role="myRole" v-bind:me="myName"
@@ -32,6 +35,8 @@
 <script>
     import Course from '../components/Course.vue';
     import People from "../components/People";
+    import Quiz from "../components/Quiz";
+    import Activity from "../components/Activity";
 
     export default {
         name: 'User',
@@ -123,6 +128,8 @@
         components: {
             Course,
             People,
+            Quiz,
+            Activity,
         },
         mounted() {
             this.getMyRecords();

@@ -29,16 +29,20 @@
                 <el-input
                     type="textarea"
                     :rows="2"
-                    placeholder="Course Description"
+                    placeholder="Comments for the student"
                     v-model="comments[index]"
                 ></el-input>
                 <br/><br/>
                 <div class="btn-group">
                   <div class="submit-btn" v-if="haveConduct[index] !== 1">
-                    <el-button type="primary" plain @click="submitConduct(index)">Submit</el-button>
+                    <el-button type="primary" plain @click="submitConduct(index)">
+                      Submit
+                    </el-button>
                   </div>
                   <div class="modify-btn" v-else-if="haveConduct[index] === 1">
-                    <el-button type="primary" plain @click="modifyConduct(index)">Modify</el-button>
+                    <el-button type="primary" plain @click="modifyConduct(index)">
+                      Modify
+                    </el-button>
                   </div>
 
                 </div>
@@ -54,7 +58,7 @@
                     text-color="#ff9900"
                     >
                 </el-rate>
-                Your conduct score is <span style="color: #ff9900;">{{myAvgRate}}</span>
+                Your conduct score is <span style="color: #ff9900;"><b>{{myAvgRate}}</b></span>
               </div>
 
             </div>
@@ -109,11 +113,19 @@
                     params
                 ).then(res => {
                     if (res.status === 201) {
-                        this.$message('Rate conduct success!');
+                        this.$message({
+                            message: 'Rate conduct success!',
+                            showClose: true,
+                            type: 'success',
+                        });
                         location.reload();
                     }
                     else {
-                        this.$message(`Rate conduct fail with status ${res.status}!`);
+                        this.$message({
+                            message: `Rate conduct fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
                     }
                     console.log("Rate conduct status: " + res.status)
                 });
@@ -168,6 +180,7 @@
             },
             modifyConduct(index) {
                 let ratedStd = this.studentArray[index].O
+                console.log(ratedStd);
                 let ratedScore = this.conductScores[index]
                 let comment = this.comments[index]
                 let params = new URLSearchParams();
@@ -186,13 +199,21 @@
                     params
                 ).then(res => {
                     if (res.status === 201) {
-                        this.$message('Rate conduct success!');
-                        location.reload();
+                        this.$message({
+                            message: 'Rate conduct success!',
+                            showClose: true,
+                            type: 'success',
+                        });
+                        // location.reload();
                     }
                     else {
-                        this.$message(`Rate conduct fail with status ${res.status}!`);
+                        this.$message({
+                            message: `Rate conduct fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
                     }
-                    console.log("Rate conduct status: " + res.status)
+                    // console.log("Rate conduct status: " + res.status)
                 });
             },
             calStdConductRate() {
@@ -211,6 +232,12 @@
                 });
                 this.ratedCount = ratedCount;
                 this.myAvgRate = totalRate / ratedCount;
+            },
+            openFullScreenLoading() {
+                this.fullscreenLoading = true;
+                setTimeout(() => {
+                    this.fullscreenLoading = false;
+                }, 1000);
             },
         },
         mounted() {

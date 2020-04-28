@@ -2,12 +2,15 @@
   <div class="main">
     <div v-if="role === 'Teacher'" class="create">
       <el-divider content-position="left">Create Courses</el-divider>
-      <el-card class="box-card" shadow="hover">
+      <el-card class="box-card" shadow="hover"  id="create-course">
         <div slot="header" class="clearfix">
           <span>Create a course</span>
-          <el-button style="float: right; padding: 3px 0; font-size: large;" type="primary" plain @click="createCourse">
-            &nbsp; Create! &nbsp;
-          </el-button>
+          <el-tooltip content="Create a course" placement="right">
+            <el-button style="float: right; padding: 3px 0; font-size: large;" type="primary" plain @click="createCourse">
+              Create!
+            </el-button>
+          </el-tooltip>
+
         </div>
 
         <el-select multiple collapse-tags v-model='peers.O' placeholder='Select Students'
@@ -44,6 +47,13 @@
         </el-upload>
         <br/>
       </el-card>
+
+      <br/>
+      <el-divider content-position="left">Modify a course</el-divider>
+      <el-card class="box-card" shadow="hover" id="modify-course">
+        modify a course
+      </el-card>
+
     </div>
 
     <br/>
@@ -54,8 +64,11 @@
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix" >
               <span style="float: left;">Course details</span>
-              <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>
-              <el-button v-if="role === 'Teacher'" style="float: right; padding: 1px 0" type="text">Create Quiz | </el-button>
+              <div class="teacher-btn-gp" v-if="role === 'Teacher'">
+                <el-button style="float: right; padding: 1px 0" type="text">Modify</el-button>
+<!--                <el-button style="float: right; padding: 1px 0" type="text">Create Quiz | </el-button>-->
+              </div>
+
             </div>
             <div class="text-item">
               <p>Teacher: {{ item.state.data.issuer.split(', ')[0].split('=')[1] }}</p>
@@ -82,7 +95,6 @@ export default {
     data() {
         return {
             checked: false,
-            postUrl: this.baseUrl,
             selectedArray: [],
             activeNames: ['1'],
             myCourses: this.course,
@@ -106,11 +118,10 @@ export default {
                 thePeers.splice(item, 1);
             });
             this.peers = thePeers;
-            console.log(this.peers);
+            // console.log(this.peers);
         },
         selectAll() {
             this.selectedArray = []
-            console.log(this.selectedArray)
             if (this.checked) {
                 this.peers.map((item) => {
                     this.selectedArray.push(item.O)
@@ -118,12 +129,12 @@ export default {
             } else {
                 this.selectedArray = []
             }
-            console.log(this.selectedArray)
+            // console.log(this.selectedArray)
         },
         changeSelect(val) {
             this.selectedArray = []
             this.selectedArray.push(val.toString());
-            console.log(this.selectedArray)
+            // console.log(this.selectedArray)
         },
         handleEventValueChange(val) {
             this.eventValue = val.toString();
@@ -133,17 +144,17 @@ export default {
             this.eventDescription = val.toString();
         },
         createCourse() {
-            if (this.selectedArray.length === 0) {
-                this.$message('Please select at least one student');
+            if (!this.validateCreateCourse()) {
                 return;
             }
+
             let eventDes = this.eventDescription;
             let eventVal = this.eventValue;
             let parties = this.selectedArray[0].toString();
 
             let that = this;
             let partyArray = parties.split(',');
-            partyArray.forEach(function(party){
+            partyArray.forEach(function(party) {
                 let params = new URLSearchParams();
                 params.append('eventType', 'Course');
                 params.append('eventDescription', eventDes);
@@ -155,16 +166,47 @@ export default {
                     params
                 ).then(res => {
                     if (res.status === 201) {
-                        that.$message('Course course success!');
+                        that.$message({
+                            message: 'Create course success!',
+                            showClose: true,
+                            type: 'success',
+                        });
                         location.reload();
                     }
-                    console.log("Create course status: " + res.status)
+                    else {
+                        that.$message({
+                            message: `Create a course fail with status ${res.status}...`,
+                            showClose: true,
+                            type: 'error',
+                        });
+                    }
                 });
             })
         },
+        validateCreateCourse() {
+            let isValidTx = true;
+            if (this.selectedArray.length === 0) {
+                this.$message({
+                    message: 'Please select at least one student',
+                    showClose: true,
+                    type: 'warning',
+                });
+                isValidTx = false;
+            }
+            if (this.eventValue.length < 1) {
+                this.$message({
+                    message: 'Please input course name',
+                    showClose: true,
+                    type: 'warning',
+                });
+                isValidTx = false;
+            }
+            return isValidTx;
+        },
         convertCourseObjToArray() {
             let courseDataArray = [];
-            this.course.forEach(function (item) {
+            let course = this.myCourses;
+            course.forEach(function (item) {
                 let currentObj = item.state.data;
                 let objs = {};
                 Object.keys(currentObj).map(function (key) {
@@ -173,14 +215,17 @@ export default {
                 courseDataArray.push(objs)
             })
             this.courseDataArray = courseDataArray;
-            // console.log(this.courseDataArray);
+            // console.log(courseDataArray);
+
         },
     },
     created() {
-        // this.getPeers();
+
+
     },
     mounted() {
-        // console.log("Course: " + this.course);
+        this.convertCourseObjToArray();
+        // console.log(this.courseDataArray.length);
     }
 }
 </script>

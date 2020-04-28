@@ -21,7 +21,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 import org.springframework.http.ResponseEntity
+import org.springframework.util.StringUtils
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import javax.servlet.http.HttpServletRequest
 
 val SERVICE_NAMES = listOf("Notary", "Network Map Service")
@@ -70,15 +76,11 @@ class MainController(rpc: NodeRPCConnection) {
     @GetMapping(value = [ "allPeople" ], produces = [ APPLICATION_JSON_VALUE ])
     fun getAllPeople(): Map<String, List<CordaX500Name>> {
         val nodeInfo = proxy.networkMapSnapshot()
-        return mapOf("allPeople" to nodeInfo.map { it.legalIdentities.first().name })
-    }
-
-    /**
-     * Displays all record states that exist in the node's vault.
-     */
-    @GetMapping(value = [ "records" ], produces = [ APPLICATION_JSON_VALUE ])
-    fun getIOUs() : ResponseEntity<List<StateAndRef<RecordState>>> {
-        return ResponseEntity.ok(proxy.vaultQueryBy<RecordState>().states)
+        return mapOf("allPeople" to nodeInfo
+                .map { it.legalIdentities.first().name }
+                //filter out myself, notary and eventual network map started by driver
+                .filter { it.locality in SERVICE_NAMES }
+        )
     }
 
     /**
@@ -101,7 +103,7 @@ class MainController(rpc: NodeRPCConnection) {
         val partyName = request.getParameter("partyName")
                 ?: return ResponseEntity.badRequest().body("Query parameter 'partyName' must not be null.\n")
         lateinit var x500Name: String
-        getPeers()["peers"]?.forEach {
+        getAllPeople()["allPeople"]?.forEach {
             if (it.organisation == partyName) {
                 x500Name = it.toString()
             }
@@ -115,7 +117,6 @@ class MainController(rpc: NodeRPCConnection) {
         val eventDescription: String = request.getParameter("eventDescription")
         val eventValue: String = request.getParameter("eventValue")
         val fileReference: String = request.getParameter("fileReference")
-
 
         lateinit var signedTx: SignedTransaction
 
@@ -179,6 +180,25 @@ class MainController(rpc: NodeRPCConnection) {
         )
     }
 
+    @PostMapping("uploads")
+    @ResponseBody
+    fun uploadFiles(@RequestParam("file") file : Array<MultipartFile>): String{
+        logger.info("Upload file(s)")
+        val rootPath : Path = Paths.get("/files/upload")
+        if (file.isEmpty()) {
+            return "upload file array is empty"
+        }
+        try {
+            for (f in file) {
+                val fileName  = StringUtils.cleanPath(f.originalFilename!!)
+                Files.copy(f.inputStream, rootPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING)
+            }
+        } catch (e : Exception) {
+            logger.error("error", e)
+            return "upload error"
+        }
+        return "success"
+    }
 
     private fun gossip(signedTx: SignedTransaction) {
         val nodeInfo = proxy.networkMapSnapshot()
@@ -224,4 +244,3 @@ class MainController(rpc: NodeRPCConnection) {
     }
 
 }
-
