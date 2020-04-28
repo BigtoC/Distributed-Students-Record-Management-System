@@ -228,4 +228,16 @@
   .create {
     text-align: left!important;
   }
+  .text-item {
+    text-align: left;
+    font-size: medium;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
 </style>
